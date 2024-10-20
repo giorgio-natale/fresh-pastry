@@ -1,5 +1,4 @@
-
-group = "it.gionatale.fp"
+group = "it.gionatale.fp.warehouseservice"
 version = "1.0-SNAPSHOT"
 
 plugins {
