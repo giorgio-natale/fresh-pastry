@@ -29,31 +29,41 @@ pipeline {
   }
   stages {
         stage('Build') {
-            when {changeset "OrderService/**"}
+            //when {changeset "OrderService/**"}
             steps {
                 container('build-container') {
-                    sh 'pwd'
-                    sh 'ls'
-                    sh 'chmod +x gradlew'
                     sh 'gradle :OrderService:bootJar'
-                    sh 'ls OrderService/build/libs'
                 }
             }
         }
         stage('Test') {
-            when {changeset "OrderService/**"}
+            //when {changeset "OrderService/**"}
             steps {
                 container('build-container') {
                     echo 'Testing...'
                 }
             }
         }
-        stage('Deploy') {
-            when {changeset "OrderService/**"}
+        stage('Create image') {
+            //when {changeset "OrderService/**"}
             steps {
-                container('kubectl-runner') {
-                    echo 'Deploying...'
+              dir('OrderService/ci-cd') {
+                script {
+                  dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
+              }
+            }
+        }
+
+        stage('Upload image') {
+            //when {changeset "OrderService/**"}
+            steps {
+              dir('OrderService/ci-cd') {
+                script {
+                  docker.withRegistry( '', registryCredential ) {
+                  dockerImage.push()
+                }
+              }
             }
         }
     }
