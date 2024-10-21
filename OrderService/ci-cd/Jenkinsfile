@@ -61,7 +61,8 @@ pipeline {
               dir('OrderService/ci-cd') {
                 script {
                   docker.withRegistry( '', registryCredential ) {
-                  dockerImage.push()
+                    dockerImage.push()
+                  }
                 }
               }
             }
