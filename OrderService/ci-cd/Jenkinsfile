@@ -25,10 +25,17 @@ pipeline {
             - cat
             tty: true
           - name: image-builder
-            image: docker
+            image: gcr.io/kaniko-project/executor:debug
             command:
-            - cat
+            - /busybox/cat
             tty: true
+            volumeMounts:
+            - name: gitlab-registry-auth-config-file
+              mountPath: /kaniko/.docker/config.json
+          volumes:
+          - name: gitlab-registry-auth-config-file
+            secret:
+              secretName: gitlab-registry-auth-config-file
         '''
     }
   }
@@ -37,7 +44,7 @@ pipeline {
             //when {changeset "OrderService/**"}
             steps {
                 container('build-container') {
-                    sh 'gradle :OrderService:bootJar'
+                    //sh 'gradle :OrderService:bootJar'
                 }
             }
         }
@@ -49,34 +56,13 @@ pipeline {
                 }
             }
         }
-        stage('Create image') {
+        stage('Upload Image') {
             //when {changeset "OrderService/**"}
-
               steps {
-                container('image-builder') {
-                  dir('OrderService/ci-cd') {
-                    script {
-                      dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                    }
-                  }
+                container(name: 'kaniko', shell: '/busybox/sh') {
+                  cat '/kaniko/.docker/config.json'
                 }
               }
-        }
-
-        stage('Upload image') {
-            //when {changeset "OrderService/**"}
-
-            steps {
-              container('image-builder') {
-                dir('OrderService/ci-cd') {
-                  script {
-                    docker.withRegistry( '', registryCredential ) {
-                      dockerImage.push()
-                    }
-                  }
-                }
-              }
-            }
         }
     }
 }
