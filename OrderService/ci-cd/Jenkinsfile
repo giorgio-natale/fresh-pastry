@@ -62,7 +62,7 @@ pipeline {
                 container(name: 'image-builder', shell: '/busybox/sh') {
                   sh '''
                     #!/busybox/sh
-                    cat /kaniko/.docker/config.json
+                    ls /kaniko/.docker/config.json
                   '''
                 }
               }
