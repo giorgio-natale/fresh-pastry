@@ -31,7 +31,7 @@ pipeline {
             tty: true
             volumeMounts:
             - name: gitlab-registry-auth-config-file
-              mountPath: /kaniko/.docker/config.json
+              mountPath: /kaniko/.docker/
           volumes:
           - name: gitlab-registry-auth-config-file
             secret:
@@ -62,7 +62,7 @@ pipeline {
                 container(name: 'image-builder', shell: '/busybox/sh') {
                   sh '''
                     #!/busybox/sh
-                    ls /kaniko/.docker/config.json
+                    cat /kaniko/.docker/config.json
                   '''
                 }
               }
