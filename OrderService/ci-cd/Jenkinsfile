@@ -34,8 +34,8 @@ pipeline {
                 container('build-container') {
                     sh 'pwd'
                     sh 'ls'
-                    sh '../gradlew :OrderService:bootJar'
-                    sh 'ls build/libs'
+                    sh './gradlew :OrderService:bootJar'
+                    sh 'ls OrderService/build/libs'
                 }
             }
         }
