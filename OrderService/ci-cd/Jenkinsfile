@@ -1,4 +1,9 @@
 pipeline {
+  environment {
+    registry = "gionatale/fresh-pastry"
+    registryCredential = 'docker-hub'
+    dockerImage = ''
+  }
   agent {
     kubernetes {
       yaml '''
@@ -29,6 +34,8 @@ pipeline {
                 container('build-container') {
                     sh 'pwd'
                     sh 'ls'
+                    sh '../gradlew :OrderService:bootJar'
+                    sh 'ls build/libs'
                 }
             }
         }
