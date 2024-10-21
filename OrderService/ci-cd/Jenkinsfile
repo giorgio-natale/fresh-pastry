@@ -24,6 +24,7 @@ pipeline {
   }
   stages {
         stage('Build') {
+            when {changeset "OrderService/**"}
             steps {
                 container('build-container') {
                     echo 'Building...'
@@ -31,6 +32,7 @@ pipeline {
             }
         }
         stage('Test') {
+            when {changeset "OrderService/**"}
             steps {
                 container('build-container') {
                     echo 'Testing...'
@@ -38,6 +40,7 @@ pipeline {
             }
         }
         stage('Deploy') {
+            when {changeset "OrderService/**"}
             steps {
                 container('kubectl-runner') {
                     echo 'Deploying...'
