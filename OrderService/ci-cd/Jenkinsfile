@@ -60,7 +60,10 @@ pipeline {
             //when {changeset "OrderService/**"}
               steps {
                 container(name: 'kaniko', shell: '/busybox/sh') {
-                  cat '/kaniko/.docker/config.json'
+                  sh '''
+                    #!/busybox/sh
+                    cat /kaniko/.docker/config.json
+                  '''
                 }
               }
         }
