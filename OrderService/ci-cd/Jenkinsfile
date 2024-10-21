@@ -60,14 +60,14 @@ pipeline {
             //when {changeset "OrderService/**"}
               steps {
                 container(name: 'image-builder', shell: '/busybox/sh') {
-                  dir('ci-cd') {
+                  //dir('ci-cd') {
                     sh '''
                       #!/busybox/sh
                       # /kaniko/executor -f `pwd`/Dockerfile -c `pwd` --cache=true --destination=registry.gitlab.com/gionatale/freshpastry/order-service:${BUILD_NUMBER}
                       pwd
                       ls
                     '''
-                  }
+                  //}
                 }
               }
         }
