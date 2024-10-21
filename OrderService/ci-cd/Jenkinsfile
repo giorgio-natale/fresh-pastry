@@ -35,7 +35,7 @@ pipeline {
                     sh 'pwd'
                     sh 'ls'
                     sh 'chmod +x gradlew'
-                    sh './gradlew :OrderService:bootJar'
+                    sh 'gradle :OrderService:bootJar'
                     sh 'ls OrderService/build/libs'
                 }
             }
