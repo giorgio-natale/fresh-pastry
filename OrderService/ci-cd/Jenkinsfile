@@ -59,7 +59,7 @@ pipeline {
         stage('Upload Image') {
             //when {changeset "OrderService/**"}
               steps {
-                container(name: 'kaniko', shell: '/busybox/sh') {
+                container(name: 'image-builder', shell: '/busybox/sh') {
                   sh '''
                     #!/busybox/sh
                     cat /kaniko/.docker/config.json
