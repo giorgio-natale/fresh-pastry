@@ -51,21 +51,23 @@ pipeline {
         }
         stage('Create image') {
             //when {changeset "OrderService/**"}
-            container('image-builder') {
+
               steps {
-                dir('OrderService/ci-cd') {
-                  script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                container('image-builder') {
+                  dir('OrderService/ci-cd') {
+                    script {
+                      dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    }
                   }
                 }
               }
-            }
         }
 
         stage('Upload image') {
             //when {changeset "OrderService/**"}
-            container('image-builder') {
-              steps {
+
+            steps {
+              container('image-builder') {
                 dir('OrderService/ci-cd') {
                   script {
                     docker.withRegistry( '', registryCredential ) {
