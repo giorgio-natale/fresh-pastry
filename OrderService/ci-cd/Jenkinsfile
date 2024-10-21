@@ -27,8 +27,8 @@ pipeline {
             when {changeset "OrderService/**"}
             steps {
                 container('build-container') {
-                    pwd
-                    ls
+                    sh 'pwd'
+                    sh 'ls'
                 }
             }
         }
