@@ -44,7 +44,7 @@ pipeline {
             //when {changeset "OrderService/**"}
             steps {
                 container('build-container') {
-                    //sh 'gradle :OrderService:bootJar'
+                    sh 'gradle :OrderService:bootJar'
                 }
             }
         }
@@ -63,9 +63,7 @@ pipeline {
                   dir('OrderService/ci-cd') {
                     sh '''
                       #!/busybox/sh
-                      # /kaniko/executor -f `pwd`/Dockerfile -c `pwd` --cache=true --destination=registry.gitlab.com/gionatale/freshpastry/order-service:${BUILD_NUMBER}
-                      pwd
-                      ls
+                      /kaniko/executor -f `pwd`/Dockerfile -c `pwd` --cache=true --destination=registry.gitlab.com/gionatale/freshpastry/order-service:${BUILD_NUMBER}
                     '''
                   }
                 }
