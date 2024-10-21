@@ -63,7 +63,7 @@ pipeline {
                   dir('ci-cd') {
                     sh '''
                       #!/busybox/sh
-                      /kaniko/executor -f `pwd`/ci-cd/Dockerfile -c `pwd` --cache=true --destination=registry.gitlab.com/gionatale/freshpastry/order-service:${BUILD_NUMBER}
+                      /kaniko/executor -f `pwd`/Dockerfile -c `pwd` --cache=true --destination=registry.gitlab.com/gionatale/freshpastry/order-service:${BUILD_NUMBER}
                     '''
                   }
                 }
