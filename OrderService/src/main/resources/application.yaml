@@ -1,2 +1,11 @@
 server:
   port: 8080
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:postgresql://localhost:30001/Orders
+    username: root
+    password: my-secret-password
