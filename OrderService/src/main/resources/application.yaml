@@ -5,6 +5,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        auto_quote_keyword: true
   datasource:
     url: jdbc:postgresql://localhost:30001/Orders
     username: root

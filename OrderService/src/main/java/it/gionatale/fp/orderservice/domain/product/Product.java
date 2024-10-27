@@ -1,9 +1,10 @@
-package it.gionatale.fp.orderservice.product;
+package it.gionatale.fp.orderservice.domain.product;
 
 import it.gionatale.fp.orderservice.persistenceconfig.MonetaryAmountUserType;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import org.hibernate.annotations.CompositeType;
+import org.javamoney.moneta.Money;
 
 import javax.money.MonetaryAmount;
 
@@ -17,19 +18,19 @@ public class Product {
     private String description;
 
     @CompositeType(MonetaryAmountUserType.class)
-    private MonetaryAmount cost;
+    private MonetaryAmount price;
 
     protected Product() {}
 
-    public Product(ProductId id, String name, String description, MonetaryAmount cost) {
+    public Product(ProductId id, String name, String description, MonetaryAmount price) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.cost = cost;
+        this.price = price;
     }
 
-    public MonetaryAmount getCost() {
-        return cost;
+    public MonetaryAmount getPrice() {
+        return price;
     }
 
     public String getDescription() {
@@ -42,5 +43,9 @@ public class Product {
 
     public String getName() {
         return name;
+    }
+
+    public void updatePrice(MonetaryAmount newPrice) {
+        this.price = newPrice;
     }
 }

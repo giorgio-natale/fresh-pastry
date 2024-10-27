@@ -1,17 +1,17 @@
 package it.gionatale.fp.orderservice.basket;
 
-import it.gionatale.fp.orderservice.customer.CustomerId;
-import it.gionatale.fp.orderservice.product.Product;
-import it.gionatale.fp.orderservice.product.ProductId;
-import it.gionatale.fp.orderservice.product.ProductRepository;
-import it.gionatale.fp.orderservice.usecases.ModifyBasketUseCase;
+import it.gionatale.fp.orderservice.domain.basket.*;
+import it.gionatale.fp.orderservice.domain.customer.CustomerId;
+import it.gionatale.fp.orderservice.domain.product.Product;
+import it.gionatale.fp.orderservice.domain.product.ProductId;
+import it.gionatale.fp.orderservice.domain.product.ProductRepository;
+import it.gionatale.fp.orderservice.domain.usecases.ModifyBasketUseCase;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.annotation.Rollback;
 
 import javax.money.Monetary;
 
@@ -55,7 +55,7 @@ public class AddBasketItemToBasketJpaTest {
         assertEquals(basket, updatedBasket);
 
         BasketItem chocoPie = entityManager.find(BasketItem.class, new BasketItemId(basketId, 0));
-        assertEquals(Money.of(3, Monetary.getCurrency("EUR")), chocoPie.getCost());
+        assertEquals(Money.of(3, Monetary.getCurrency("EUR")), chocoPie.getPrice());
         assertEquals(1, chocoPie.getQuantity());
         assertEquals(productId, chocoPie.getProductId());
 
@@ -80,7 +80,7 @@ public class AddBasketItemToBasketJpaTest {
         assertEquals(basket, updatedBasket);
 
         BasketItem chocoPie = entityManager.find(BasketItem.class, new BasketItemId(basketId, 0));
-        assertEquals(Money.of(3, Monetary.getCurrency("EUR")), chocoPie.getCost());
+        assertEquals(Money.of(3, Monetary.getCurrency("EUR")), chocoPie.getPrice());
         assertEquals(2, chocoPie.getQuantity());
         assertEquals(productId, chocoPie.getProductId());
     }

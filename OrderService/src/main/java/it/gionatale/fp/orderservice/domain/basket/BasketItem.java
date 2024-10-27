@@ -1,7 +1,7 @@
-package it.gionatale.fp.orderservice.basket;
+package it.gionatale.fp.orderservice.domain.basket;
 
 import it.gionatale.fp.orderservice.persistenceconfig.MonetaryAmountUserType;
-import it.gionatale.fp.orderservice.product.ProductId;
+import it.gionatale.fp.orderservice.domain.product.ProductId;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CompositeType;
 
@@ -23,15 +23,15 @@ public class BasketItem {
     private Integer quantity;
 
     @CompositeType(MonetaryAmountUserType.class)
-    private MonetaryAmount cost;
+    private MonetaryAmount price;
 
 
     protected BasketItem() {}
 
-    public BasketItem(ProductId productId, BasketId basketId, Integer index, MonetaryAmount cost) {
+    public BasketItem(ProductId productId, BasketId basketId, Integer index, MonetaryAmount price) {
         this.productId = productId;
         this.id = new BasketItemId(basketId, index);
-        this.cost = cost;
+        this.price = price;
         this.quantity = 1;
     }
 
@@ -47,7 +47,11 @@ public class BasketItem {
         return quantity;
     }
 
-    public MonetaryAmount getCost() {
-        return cost;
+    public MonetaryAmount getPrice() {
+        return price;
+    }
+
+    public void updatePrice(MonetaryAmount price) {
+        this.price = price;
     }
 }

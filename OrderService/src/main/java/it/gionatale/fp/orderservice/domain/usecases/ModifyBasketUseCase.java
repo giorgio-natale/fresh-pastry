@@ -1,11 +1,13 @@
-package it.gionatale.fp.orderservice.usecases;
+package it.gionatale.fp.orderservice.domain.usecases;
 
-import it.gionatale.fp.orderservice.basket.BasketId;
-import it.gionatale.fp.orderservice.basket.BasketRepository;
-import it.gionatale.fp.orderservice.customer.CustomerId;
-import it.gionatale.fp.orderservice.product.ProductId;
-import it.gionatale.fp.orderservice.product.ProductRepository;
+import it.gionatale.fp.orderservice.domain.basket.BasketId;
+import it.gionatale.fp.orderservice.domain.basket.BasketRepository;
+import it.gionatale.fp.orderservice.domain.customer.CustomerId;
+import it.gionatale.fp.orderservice.domain.product.ProductId;
+import it.gionatale.fp.orderservice.domain.product.ProductRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
 
 
 @Service
@@ -22,12 +24,12 @@ public class ModifyBasketUseCase {
         basketRepository.findById(new BasketId(customerId)).ifPresentOrElse(
                 basket -> productRepository.findById(productId).ifPresentOrElse(
                         product -> {
-                            basket.addItem(product.getId(), product.getCost());
+                            basket.addItem(product.getId(), product.getPrice());
                         },
                         () -> {
-                            throw new ProductNotFoundException(String.format("Product '%d' not found", productId.id()));
+                            throw new NoSuchElementException(String.format("Product '%d' not found", productId.id()));
                         }),
-                () -> {throw new CustomerNotFoundException(String.format("Customer '%d' not found", customerId.id()));}
+                () -> {throw new NoSuchElementException(String.format("Customer '%d' not found", customerId.id()));}
         );
     }
 }

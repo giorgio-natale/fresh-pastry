@@ -22,7 +22,7 @@ public class MonetaryAmountUserType implements CompositeUserType<MonetaryAmount>
         return switch (property) {
             case 0 -> monetaryAmount.getCurrency().getCurrencyCode();
             case 1 -> monetaryAmount.getNumber().numberValue(BigDecimal.class);
-            default -> throw new HibernateException("Illegal property index: " + property);
+            default -> throw new HibernateException("Illegal property orderItemIndex: " + property);
         };
     }
 

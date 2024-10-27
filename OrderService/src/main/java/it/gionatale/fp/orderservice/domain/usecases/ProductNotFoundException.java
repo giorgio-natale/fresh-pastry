@@ -1,4 +1,4 @@
-package it.gionatale.fp.orderservice.usecases;
+package it.gionatale.fp.orderservice.domain.usecases;
 
 public class ProductNotFoundException extends RuntimeException {
     public ProductNotFoundException(String message) {

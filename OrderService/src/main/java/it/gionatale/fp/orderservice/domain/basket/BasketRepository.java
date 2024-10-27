@@ -1,4 +1,4 @@
-package it.gionatale.fp.orderservice.basket;
+package it.gionatale.fp.orderservice.domain.basket;
 
 import org.springframework.data.repository.CrudRepository;
 

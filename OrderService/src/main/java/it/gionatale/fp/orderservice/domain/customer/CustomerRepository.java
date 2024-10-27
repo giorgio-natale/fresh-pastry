@@ -1,4 +1,4 @@
-package it.gionatale.fp.orderservice.customer;
+package it.gionatale.fp.orderservice.domain.customer;
 
 import org.springframework.data.repository.CrudRepository;
 

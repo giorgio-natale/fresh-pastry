@@ -1,7 +1,9 @@
 package it.gionatale.fp.orderservice.basket;
 
-import it.gionatale.fp.orderservice.customer.CustomerId;
-import it.gionatale.fp.orderservice.product.ProductId;
+import it.gionatale.fp.orderservice.domain.basket.Basket;
+import it.gionatale.fp.orderservice.domain.basket.BasketId;
+import it.gionatale.fp.orderservice.domain.customer.CustomerId;
+import it.gionatale.fp.orderservice.domain.product.ProductId;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
 
