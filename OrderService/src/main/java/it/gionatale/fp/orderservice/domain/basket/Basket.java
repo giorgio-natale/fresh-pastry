@@ -1,5 +1,7 @@
 package it.gionatale.fp.orderservice.domain.basket;
 
+import it.gionatale.fp.commons.EntityCollectionUtils;
+import it.gionatale.fp.orderservice.domain.basket.representation.BasketItemVO;
 import it.gionatale.fp.orderservice.domain.order.Order;
 import it.gionatale.fp.orderservice.domain.order.OrderId;
 import it.gionatale.fp.orderservice.domain.product.Product;
@@ -7,11 +9,7 @@ import it.gionatale.fp.orderservice.domain.product.ProductId;
 import it.gionatale.fp.orderservice.domain.product.ProductRepository;
 import jakarta.persistence.*;
 
-import javax.money.MonetaryAmount;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -22,7 +20,7 @@ public class Basket {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name="basket_id", referencedColumnName = "id", updatable = false)
-    @OrderBy("item_id ASC")
+    @OrderBy("item_order asc")
     private List<BasketItem> items;
 
     protected Basket(){}
@@ -34,14 +32,35 @@ public class Basket {
 
     public BasketId getId() {return id;}
 
-    public void addItem(ProductId productId, MonetaryAmount cost) {
+    public void addItem(BasketItemVO basketItem) {
         for (BasketItem item : items) {
-            if (item.getProductId() == productId) {
-                item.increaseQuantity();
+            if (item.getProductId() == basketItem.productId()) {
+                item.increaseQuantity(basketItem.quantity());
                 return;
             }
         }
-        items.add(new BasketItem(productId, this.id, items.size(), cost));
+        items.add(new BasketItem(this.id, basketItem.productId(), basketItem.price()));
+    }
+
+    public void prepare(List<BasketItemVO> basketItems) {
+
+        Collection<BasketItem> newItems = EntityCollectionUtils.createEntityCollection(
+                this.items,
+                basketItems,
+                BasketItem::getId,
+                (BasketItemVO newItem) -> new BasketItemId(this.id, newItem.productId()),
+                (BasketItemVO newItem, BasketItem oldItem) -> {
+                    oldItem.updateQuantity(newItem.quantity());
+                    oldItem.updatePrice(newItem.price());
+                },
+                (BasketItemVO newItem) -> new BasketItem(this.id, newItem.productId(), newItem.price())
+        );
+        this.items.clear();
+        this.items.addAll(newItems);
+        for (int index = 0; index < this.items.size(); index++) {
+            this.items.get(index).updateItemOrder(index);
+        }
+
     }
 
     public Order checkout(ProductRepository productRepository) throws BasketOutOfSyncException {

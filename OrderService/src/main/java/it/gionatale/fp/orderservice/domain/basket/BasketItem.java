@@ -6,41 +6,50 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CompositeType;
 
 import javax.money.MonetaryAmount;
+import java.util.Objects;
 
 @Entity
 public class BasketItem {
     @EmbeddedId
     @AttributeOverrides({
             @AttributeOverride(name="basketId.id", column = @Column(name = "basket_id")),
-            @AttributeOverride(name="itemId", column = @Column(name = "item_id"))
+            @AttributeOverride(name="productId.id", column = @Column(name = "product_id"))
     })
     private BasketItemId id;
-
-    @Embedded
-    @AttributeOverride(name="id", column = @Column(name = "product_id"))
-    private ProductId productId;
 
     private Integer quantity;
 
     @CompositeType(MonetaryAmountUserType.class)
     private MonetaryAmount price;
 
+    private int itemOrder;
 
     protected BasketItem() {}
 
-    public BasketItem(ProductId productId, BasketId basketId, Integer index, MonetaryAmount price) {
-        this.productId = productId;
-        this.id = new BasketItemId(basketId, index);
+    public BasketItem(BasketId basketId, ProductId productId, MonetaryAmount price) {
+        this.id = new BasketItemId(basketId, productId);
         this.price = price;
         this.quantity = 1;
     }
 
-    void increaseQuantity() {
-        this.quantity++;
+    public void updateQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    void increaseQuantity(int quantity) {
+        this.quantity += quantity;
+    }
+
+    void updateItemOrder(int itemOrder) {
+        this.itemOrder = itemOrder;
+    }
+
+    public BasketItemId getId() {
+        return id;
     }
 
     public ProductId getProductId() {
-        return productId;
+        return id.productId();
     }
 
     public int getQuantity() {

@@ -4,6 +4,7 @@ import it.gionatale.fp.orderservice.domain.basket.Basket;
 import it.gionatale.fp.orderservice.domain.basket.BasketId;
 import it.gionatale.fp.orderservice.domain.basket.BasketOutOfSyncException;
 import it.gionatale.fp.orderservice.domain.basket.BasketRepository;
+import it.gionatale.fp.orderservice.domain.basket.representation.BasketItemVO;
 import it.gionatale.fp.orderservice.domain.customer.CustomerId;
 import it.gionatale.fp.orderservice.domain.order.OrderRepository;
 import it.gionatale.fp.orderservice.domain.order.OrderStatusName;
@@ -49,7 +50,7 @@ public class CheckoutJpaTest {
         ProductId productId = new ProductId(1L);
         Product product = entityManager.persist(new Product(productId, "Choco Pie", "Awesome chocolate pie", Money.of(3, Monetary.getCurrency("EUR"))));
 
-        basket.addItem(productId, product.getPrice());
+        basket.addItem(new BasketItemVO(productId, product.getPrice(), 1));
 
         entityManager.flush();
 
@@ -73,7 +74,7 @@ public class CheckoutJpaTest {
         ProductId productId = new ProductId(1L);
         Product product = entityManager.persist(new Product(productId, "Choco Pie", "Awesome chocolate pie", Money.of(3, Monetary.getCurrency("EUR"))));
 
-        basket.addItem(productId, product.getPrice());
+        basket.addItem(new BasketItemVO(productId, product.getPrice(), 1));
 
         entityManager.flush();
 
@@ -99,7 +100,7 @@ public class CheckoutJpaTest {
         ProductId productId = new ProductId(1L);
         Product product = entityManager.persist(new Product(productId, "Choco Pie", "Awesome chocolate pie", Money.of(3, Monetary.getCurrency("EUR"))));
 
-        basket.addItem(productId, product.getPrice());
+        basket.addItem(new BasketItemVO(productId, product.getPrice(), 1));
 
         entityManager.flush();
 
