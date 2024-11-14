@@ -8,7 +8,9 @@ import it.gionatale.fp.orderservice.domain.product.Product;
 import it.gionatale.fp.orderservice.domain.product.ProductId;
 import it.gionatale.fp.orderservice.domain.product.ProductRepository;
 import jakarta.persistence.*;
+import org.javamoney.moneta.Money;
 
+import javax.money.MonetaryAmount;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,7 +55,7 @@ public class Basket {
                     oldItem.updateQuantity(newItem.quantity());
                     oldItem.updatePrice(newItem.price());
                 },
-                (BasketItemVO newItem) -> new BasketItem(this.id, newItem.productId(), newItem.price())
+                (BasketItemVO newItem) -> new BasketItem(this.id, newItem.productId(), newItem.price(), newItem.quantity())
         );
         this.items.clear();
         this.items.addAll(newItems);
@@ -85,6 +87,12 @@ public class Basket {
 
     public List<BasketItem> getItems() {
         return new ArrayList<>(items);
+    }
+
+    public MonetaryAmount getTotal() {
+        return this.items.stream()
+                .map(item -> item.getPrice().multiply(item.getQuantity()))
+                .reduce(Money.of(0, "EUR"), MonetaryAmount::add);
     }
 
     private boolean checkIfOutOfSyncAndUpdateItems(ProductRepository productRepository) {

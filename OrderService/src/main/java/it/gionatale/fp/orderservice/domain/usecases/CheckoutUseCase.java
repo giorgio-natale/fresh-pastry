@@ -25,6 +25,7 @@ public class CheckoutUseCase {
         this.productRepository = productRepository;
     }
 
+
     @Transactional(dontRollbackOn = BasketOutOfSyncException.class)
     public void checkout(CustomerId customerId) throws BasketOutOfSyncException {
         Basket basket = basketRepository.findById(new BasketId(customerId)).orElseThrow(() -> new NoSuchElementException(String.format("Customer with id %d not found", customerId.id())));

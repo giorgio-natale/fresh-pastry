@@ -27,9 +27,13 @@ public class BasketItem {
     protected BasketItem() {}
 
     public BasketItem(BasketId basketId, ProductId productId, MonetaryAmount price) {
+        this(basketId, productId, price, 1);
+    }
+
+    public BasketItem(BasketId basketId, ProductId productId, MonetaryAmount price, int quantity) {
         this.id = new BasketItemId(basketId, productId);
         this.price = price;
-        this.quantity = 1;
+        this.quantity = quantity;
     }
 
     public void updateQuantity(int quantity) {

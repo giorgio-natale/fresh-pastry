@@ -9,3 +9,16 @@ spring:
     url: jdbc:postgresql://localhost:30001/orderstest
     username: root
     password: my-secret-password
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+        orm:
+          jdbc:
+            bind: TRACE

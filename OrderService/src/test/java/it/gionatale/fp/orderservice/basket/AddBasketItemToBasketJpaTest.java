@@ -6,14 +6,13 @@ import it.gionatale.fp.orderservice.domain.customer.CustomerId;
 import it.gionatale.fp.orderservice.domain.product.Product;
 import it.gionatale.fp.orderservice.domain.product.ProductId;
 import it.gionatale.fp.orderservice.domain.product.ProductRepository;
-import it.gionatale.fp.orderservice.domain.usecases.ModifyBasketUseCase;
+import it.gionatale.fp.orderservice.domain.usecases.BasketUseCase;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.annotation.Rollback;
 
 import javax.money.Monetary;
 
@@ -51,8 +50,8 @@ public class AddBasketItemToBasketJpaTest {
         ProductId productId = new ProductId(1L);
         entityManager.persist(new Product(productId, "Choco Pie", "Awesome chocolate pie", Money.of(3, Monetary.getCurrency("EUR"))));
 
-        ModifyBasketUseCase modifyBasketUseCase = new ModifyBasketUseCase(basketRepository, productRepository);
-        modifyBasketUseCase.addItemToBasket(customerId, productId);
+        BasketUseCase basketUseCase = new BasketUseCase(basketRepository, productRepository);
+        basketUseCase.addItemToBasket(customerId, productId);
         entityManager.flush();
 
         Basket updatedBasket = entityManager.find(Basket.class, basket.getId());
@@ -75,9 +74,9 @@ public class AddBasketItemToBasketJpaTest {
         ProductId productId = new ProductId(1L);
         entityManager.persist(new Product(productId, "Choco Pie", "Awesome chocolate pie", Money.of(3, Monetary.getCurrency("EUR"))));
 
-        ModifyBasketUseCase modifyBasketUseCase = new ModifyBasketUseCase(basketRepository, productRepository);
-        modifyBasketUseCase.addItemToBasket(customerId, productId);
-        modifyBasketUseCase.addItemToBasket(customerId, productId);
+        BasketUseCase basketUseCase = new BasketUseCase(basketRepository, productRepository);
+        basketUseCase.addItemToBasket(customerId, productId);
+        basketUseCase.addItemToBasket(customerId, productId);
         entityManager.flush();
 
         Basket updatedBasket = entityManager.find(Basket.class, basket.getId());
@@ -102,9 +101,9 @@ public class AddBasketItemToBasketJpaTest {
         entityManager.persist(new Product(productId1, "Choco Pie", "Awesome chocolate pie", Money.of(3, Monetary.getCurrency("EUR"))));
         entityManager.persist(new Product(productId2, "Apple Pie", "Awesome apple pie", Money.of(2, Monetary.getCurrency("EUR"))));
 
-        ModifyBasketUseCase modifyBasketUseCase = new ModifyBasketUseCase(basketRepository, productRepository);
-        modifyBasketUseCase.addItemToBasket(customerId, productId1);
-        modifyBasketUseCase.addItemToBasket(customerId, productId2);
+        BasketUseCase basketUseCase = new BasketUseCase(basketRepository, productRepository);
+        basketUseCase.addItemToBasket(customerId, productId1);
+        basketUseCase.addItemToBasket(customerId, productId2);
         entityManager.flush();
 
         Basket updatedBasket = entityManager.find(Basket.class, basket.getId());
